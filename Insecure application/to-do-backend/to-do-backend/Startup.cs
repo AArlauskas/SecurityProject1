@@ -37,6 +37,7 @@ namespace to_do_backend
                                       .AllowAnyMethod();
                                   });
             });
+            services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,6 +60,9 @@ namespace to_do_backend
             {
                 endpoints.MapControllers();
             });
+
+            app.UseSwagger();
+            app.UseSwaggerUI();
         }
     }
 }

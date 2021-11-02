@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\aurux\\Desktop\\UA\\Software Engineering\\to-do-backend\\to-do-backend\\to-do-backend.csproj": {}
+    "C:\\Users\\aurux\\Desktop\\SecurityProject1\\Insecure application\\to-do-backend\\to-do-backend\\to-do-backend.csproj": {}
   },
   "projects": {
-    "C:\\Users\\aurux\\Desktop\\UA\\Software Engineering\\to-do-backend\\to-do-backend\\to-do-backend.csproj": {
+    "C:\\Users\\aurux\\Desktop\\SecurityProject1\\Insecure application\\to-do-backend\\to-do-backend\\to-do-backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\aurux\\Desktop\\UA\\Software Engineering\\to-do-backend\\to-do-backend\\to-do-backend.csproj",
+        "projectUniqueName": "C:\\Users\\aurux\\Desktop\\SecurityProject1\\Insecure application\\to-do-backend\\to-do-backend\\to-do-backend.csproj",
         "projectName": "to-do-backend",
-        "projectPath": "C:\\Users\\aurux\\Desktop\\UA\\Software Engineering\\to-do-backend\\to-do-backend\\to-do-backend.csproj",
+        "projectPath": "C:\\Users\\aurux\\Desktop\\SecurityProject1\\Insecure application\\to-do-backend\\to-do-backend\\to-do-backend.csproj",
         "packagesPath": "C:\\Users\\aurux\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\aurux\\Desktop\\UA\\Software Engineering\\to-do-backend\\to-do-backend\\obj\\",
+        "outputPath": "C:\\Users\\aurux\\Desktop\\SecurityProject1\\Insecure application\\to-do-backend\\to-do-backend\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -68,6 +68,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[5.0.11, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.2.3, )"
             },
             "System.Data.SQLite.Core": {
               "target": "Package",

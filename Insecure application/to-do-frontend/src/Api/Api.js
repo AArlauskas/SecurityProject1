@@ -22,3 +22,5 @@ export const toggleItem = (id) => api.put(`/items/toggle/${id}`)
 export const getItem = (id) => api.get(`/items/${id}`)
 
 export const updateItem = (id, data) => api.put(`/items/${id}`, data)
+
+export const getAdminUsers = (id) => api.get(`/items/${id}`)

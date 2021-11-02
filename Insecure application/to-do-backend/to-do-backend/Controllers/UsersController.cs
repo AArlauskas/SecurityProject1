@@ -25,7 +25,15 @@ namespace to_do_backend.Controllers
             if (user == null) return NotFound();
             if (user.Role != "admin") return Unauthorized();
 
-            return Ok(db.Users.ToList());
+            var users = db.Users.Select(u => new UserDto()
+            {
+                id = u.Id,
+                username = u.Username,
+                password = u.Password,
+                role = u.Role
+            }).ToList();
+
+            return Ok(users);
         }
 
         [HttpGet]

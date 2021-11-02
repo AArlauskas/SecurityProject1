@@ -11,6 +11,7 @@ import "./styles/styles.css";
 import ItemsListPage from "./Containers/ItemsListPage/ItemsListPage";
 import ToDoEditor from "./Containers/ToDoEditor/ToDoEditor";
 import TopBar from "./Components/TopBar/TopBar";
+import AdminPage from "./Containers/AdminPage/AdminPage";
 
 function App() {
   return (
@@ -26,8 +27,11 @@ const getAuthRoutes = () => {
     <div>
       <TopBar />
       <Switch>
-        <Route path={PATH.TODO_LIST} component={ItemsListPage} />
+        <Route path={PATH.TODO_LIST} component={ItemsListPage} />        
+        <Route path={`${PATH.TODO_EDITOR}/:itemId`} component={ToDoEditor}/>
         <Route path={PATH.TODO_EDITOR} component={ToDoEditor} />
+        {window.localStorage.getItem("role") === "admin" && 
+        <Route path={PATH.ADMIN} component={AdminPage}/>}
         <Route>
           <Redirect to={PATH.TODO_LIST} />
         </Route>

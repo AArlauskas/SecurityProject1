@@ -1,24 +1,43 @@
 import { Button, Grid, TextField } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
-import { postToDoItem } from "../../Api/Api";
+import { getItem, postToDoItem, updateItem } from "../../Api/Api";
 import PATH from "../../Contstants/Path";
+import { withRouter } from "react-router";
 
-export default function ToDoEditor() {
+const ToDoEditor = (props) => {
   const history = useHistory();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+
+  useEffect(() => {
+    const itemId = props.match?.params?.itemId;
+    if (itemId) {
+      getItem(itemId).then((response) => {
+        const { data } = response;
+        setTitle(data.title);
+        setDescription(data.description);
+      });
+    }
+  }, [props]);
   const onCancel = () => history.push(PATH.TODO_LIST);
   const onSubmit = () => {
+    const itemId = props.match?.params?.itemId;
     const data = {
       title,
       description,
-      isDone: false,
       userId: Number.parseInt(window.localStorage.getItem("id")),
     };
-    postToDoItem(data).then((response) => {
-      onCancel();
-    });
+    if (itemId) {
+      updateItem(itemId, data).then(() => {
+        onCancel();
+      });
+    } else {
+      postToDoItem(data).then((response) => {
+        data.isDone = false;
+        onCancel();
+      });
+    }
   };
   return (
     <Grid
@@ -71,4 +90,6 @@ export default function ToDoEditor() {
       </Grid>
     </Grid>
   );
-}
+};
+
+export default withRouter(ToDoEditor);

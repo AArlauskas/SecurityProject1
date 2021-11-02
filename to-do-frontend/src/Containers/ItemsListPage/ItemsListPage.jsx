@@ -89,6 +89,10 @@ export default function ItemsListPage() {
       setItems(tempItems);
     });
   };
+
+  const onItemClick = (id) => {
+    history.push(`${PATH.TODO_EDITOR}/${id}`);
+  };
   return (
     <Grid container justifyContent="center" className="toDoList">
       <Grid
@@ -111,7 +115,7 @@ export default function ItemsListPage() {
         </Grid>
         <Grid item>
           <Paper elevation={2}>
-            <List>
+            <List style={{ width: "100%" }}>
               {items.map((item) => (
                 <div key={item.id}>
                   <ToDoListItem
@@ -122,6 +126,7 @@ export default function ItemsListPage() {
                     isDone={item.isDone}
                     onDelete={onItemDelete}
                     onToggle={onItemToggle}
+                    onClick={onItemClick}
                   />
                   <Divider />
                 </div>

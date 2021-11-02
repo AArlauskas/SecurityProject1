@@ -20,10 +20,11 @@ export default function ToDoListItem({
   isDone,
   onDelete,
   onToggle,
+  onClick,
 }) {
   const formatedDescription = `<div style="padding: 40px">${description}</div>`;
   return (
-    <ListItem>
+    <ListItem button>
       <ListItemAvatar id="Avatar" onClick={() => onToggle(id)}>
         {isDone ? (
           <Avatar sx={{ bgcolor: green[500] }}>
@@ -35,8 +36,8 @@ export default function ToDoListItem({
           </Avatar>
         )}
       </ListItemAvatar>
-      <ListItemText primary={title} />
-      <InnerHTML html={formatedDescription} />
+      <ListItemText primary={title} onClick={() => onClick(id)} />
+      <InnerHTML html={formatedDescription} onClick={() => onClick(id)} />
       <ListItemSecondaryAction>
         <ListItemIcon>
           <IconButton onClick={() => onDelete(id)}>

@@ -11,10 +11,14 @@ export const login = (username, password) => api.post("/users/login", {username,
 
 export const postToDoItem = (data) => api.post("/items", data)
 
-export const getUserItems = (id) => api.get(`/items/${id}`)
+export const getUserItems = (id) => api.get(`/items/`, {params: {userid: id}})
 
 export const getAdminItems = (id) => api.get(`/items/admin/${id}`)
 
 export const deleteItem = (id) => api.delete(`/items/${id}`)
 
-export const toggleItem = (id) => api.patch(`items/toggle/${id}`)
+export const toggleItem = (id) => api.put(`/items/toggle/${id}`)
+
+export const getItem = (id) => api.get(`/items/${id}`)
+
+export const updateItem = (id, data) => api.put(`/items/${id}`, data)

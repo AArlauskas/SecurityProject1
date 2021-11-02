@@ -41,14 +41,15 @@ namespace to_do_backend.Controllers
         {
             var user = db.Users.Find(userId);
             if (user == null) return NotFound();
-            var items = user.Items.Select(i => new ToDoItemDto()
-            {
-                id = i.Id,
-                title = i.Title,
-                description = i.Description,
-                isDone = i.IsDone,
-                username = i.User.Username
-            }).ToList();
+            var items = db.Items.Where(i => i.UserId == userId)
+                .Select(i => new ToDoItemDto()
+                {
+                    id = i.Id,
+                    title = i.Title,
+                    description = i.Description,
+                    isDone = i.IsDone,
+                    username = user.Username
+                }).ToList();
 
             return Ok(items);
         }
@@ -87,7 +88,7 @@ namespace to_do_backend.Controllers
             return Ok();
         }
 
-        [HttpPatch, Route("{id}")]
+        [HttpPut, Route("{id}")]
         public ActionResult<ToDoItem> updateToDoItem([FromRoute] int id, [FromBody] ToDoItemDto item)
         {
             var existingItem = db.Items.Find(id);
@@ -95,13 +96,12 @@ namespace to_do_backend.Controllers
 
             existingItem.Title = item.title;
             existingItem.Description = item.description;
-            existingItem.IsDone = item.isDone;
 
             db.SaveChanges();
             return Ok(existingItem);
         }
 
-        [HttpPatch, Route("toggle/{id}")]
+        [HttpPut, Route("toggle/{id}")]
         public ActionResult<ToDoItem> toggleToDoItem([FromRoute] int id)
         {
             var existingItem = db.Items.Find(id);

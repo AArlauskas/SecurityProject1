@@ -6,18 +6,21 @@ import {
 } from "react-router-dom";
 import LoginPage from "./Containers/LoginPage/LoginPage";
 import PATH from "./Contstants/Path";
-import { CssBaseline } from "@mui/material";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import "./styles/styles.css";
 import ItemsListPage from "./Containers/ItemsListPage/ItemsListPage";
 import ToDoEditor from "./Containers/ToDoEditor/ToDoEditor";
 import TopBar from "./Components/TopBar/TopBar";
 import AdminPage from "./Containers/AdminPage/AdminPage";
+import theme from "./styles/theme";
 
 function App() {
   return (
     <Router>
+      <ThemeProvider theme={theme}>
       <CssBaseline />
       {window.localStorage.getItem("id") ? getAuthRoutes() : getPublicRoutes()}
+      </ThemeProvider>
     </Router>
   );
 }

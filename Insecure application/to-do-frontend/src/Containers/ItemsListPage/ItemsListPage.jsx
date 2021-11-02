@@ -10,27 +10,6 @@ import {
 import ToDoListItem from "../../Components/ToDoListItem/ToDoListItem";
 import PATH from "../../Contstants/Path";
 
-// const items = [
-//   {
-//     id: 1,
-//     title: "Clean stuff",
-//     description: "<script>console.log(123);</script>something nasty...",
-//     isDone: false,
-//   },
-//   {
-//     id: 2,
-//     title: "Vacuum home",
-//     description: "something nasty but at the same time cool...",
-//     isDone: true,
-//   },
-//   {
-//     id: 3,
-//     title: "Vacuum home",
-//     description:
-//       "something nasty but at the same time cool...something nasty but at the same time cool...something nasty but at the same time cool...something nasty but at the same time cool...something nasty but at the same time cool...",
-//     isDone: true,
-//   },
-// ];
 export default function ItemsListPage() {
   const history = useHistory();
   const [items, setItems] = useState([]);

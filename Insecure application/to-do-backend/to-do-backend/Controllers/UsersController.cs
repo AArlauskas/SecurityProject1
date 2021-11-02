@@ -78,5 +78,56 @@ namespace to_do_backend.Controllers
 
             return Ok(result);
         }
+
+        [HttpPost, Route("{adminId}")]
+        public ActionResult<UserDto> addUser([FromRoute] int adminId, [FromBody] UserDto userDto)
+        {
+            User admin = db.Users.Find(adminId);
+            if (admin == null || admin.Role != "admin") return Unauthorized();
+            if (String.IsNullOrWhiteSpace(userDto.username) || String.IsNullOrWhiteSpace(userDto.password)) return BadRequest("Username and password must be provided");
+            if (userDto.role != "user" && userDto.role != "admin") return BadRequest("Bad role provided");
+            var user = new User()
+            {
+                Username = userDto.username,
+                Password = userDto.password,
+                Role = userDto.role,
+                Items = new List<ToDoItem>()
+            };
+            db.Users.Add(user);
+            db.SaveChanges();
+
+            return Ok(user);
+        }
+
+        [HttpPut, Route("{adminId}")]
+        public ActionResult<UserDto> updateUser([FromRoute] int adminId, [FromBody] UserDto userDto)
+        {
+            User admin = db.Users.Find(adminId);
+            if (admin == null || admin.Role != "admin") return Unauthorized();
+            if (String.IsNullOrWhiteSpace(userDto.username) || String.IsNullOrWhiteSpace(userDto.password)) return BadRequest("Username and password must be provided");
+            if (userDto.role != "user" && userDto.role != "admin") return BadRequest("Bad role provided");
+            var user = db.Users.Find(userDto.id);
+            if (user == null) return NotFound();
+            user.Username = userDto.username;
+            user.Password = userDto.password;
+            user.Role = userDto.role;
+
+            db.SaveChanges();
+            return Ok();
+        }
+
+        [HttpDelete, Route("{adminId}/{userId}")]
+        public ActionResult<UserDto> deleteUser([FromRoute] int adminId, [FromRoute] int userId)
+        {
+            User admin = db.Users.Find(adminId);
+            if (admin == null || admin.Role != "admin") return Unauthorized();
+
+            User user = db.Users.Find(userId);
+            if (user == null) return NotFound();
+            db.Users.Remove(user);
+            db.SaveChanges();
+            return Ok();
+        }
+
     }
 }

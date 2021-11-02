@@ -1,5 +1,11 @@
-import { createTheme } from "@mui/system"
+import { createTheme } from "@mui/material/styles"
 
-const theme = {}
+const theme = {
+    pallete: {
+        primary: {
+            main: "#f0f0f0"
+        }
+    }
+}
 
 export default createTheme(theme)

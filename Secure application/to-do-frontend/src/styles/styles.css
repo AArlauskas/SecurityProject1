@@ -1,0 +1,25 @@
+.page {
+  min-width: "100%";
+  padding-left: 5vh;
+  padding-right: 5vh;
+  height: 100vh;
+}
+
+#workerImage {
+  min-width: 25%;
+  min-height: 25%;
+}
+
+.toDoList {
+  padding-top: 5vh;
+}
+
+.editor {
+  padding-top: 5vh;
+  padding-left: 10%;
+  padding-right: 10%;
+}
+
+#Avatar {
+  cursor: pointer;
+}

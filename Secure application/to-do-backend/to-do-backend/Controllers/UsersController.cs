@@ -5,6 +5,8 @@ using to_do_backend.Dtos;
 using System.Data.SQLite;
 using System;
 using to_do_backend.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace to_do_backend.Controllers
 {
@@ -41,6 +43,26 @@ namespace to_do_backend.Controllers
         {
             var users = db.Users.ToList();
             return Ok(users);
+        }
+
+        [HttpGet, Route("personal")]
+        [Authorize(Roles = "admin,user")]
+        public ActionResult<UserDto> getUserInfo()
+        {
+            var claim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (claim == null) return NotFound();
+            if(!int.TryParse(claim.Value, out int userId)) return NotFound();
+            var user = db.Users.Find(userId);
+            if (user == null) return NotFound();
+            var userDto = new UserDto()
+            {
+                id = user.Id,
+                username = user.Username,
+                password = user.Password,
+                role = user.Role
+            };
+
+            return Ok(userDto);
         }
 
         [HttpPost, Route("login")]

@@ -65,42 +65,6 @@ namespace to_do_backend.Controllers
             return Ok(userDto);
         }
 
-        [HttpPost, Route("login")]
-        public ActionResult Login([FromBody] LoginRequestDto userDto)
-        {
-            var result = new LoginResponseDto();
-            try
-            {
-                SQLiteConnection connection = new SQLiteConnection("Data Source=ToDoDatabase.db");
-                connection.Open();
-                string query = "SELECT * FROM Users WHERE Username='" +
-                userDto.username + "' AND Password='" + userDto.password + "';";
-                var command = connection.CreateCommand();
-                command.CommandText = query;
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        result.id = reader.GetInt32(0);
-                        result.username = reader.GetString(1);
-                        result.role = reader.GetString(3);
-                        break;
-                    }
-                }
-                connection.Close();
-                if (result.username == null)
-                {
-                    throw new Exception("User not found");
-                }
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-
-            return Ok(result);
-        }
-
         [HttpPost, Route("{adminId}")]
         public ActionResult<UserDto> addUser([FromRoute] int adminId, [FromBody] UserDto userDto)
         {

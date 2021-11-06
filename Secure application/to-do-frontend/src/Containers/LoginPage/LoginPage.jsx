@@ -1,24 +1,27 @@
 import { Grid, Hidden } from "@mui/material";
 import loginPhoto from "../../Assets/login-logo.svg";
 import LoginForm from "../../Components/LoginForm/LoginForm";
-import { login } from "../../Api/Api";
 import { useState } from "react";
+import { authenticate, getCurrentUser } from "../../Api/PublicApi";
 
 export default function LoginPage() {
   const [errorMessage, setErrorMessage] = useState(null);
   const onLogin = (username, password) => {
     setErrorMessage(null);
-    login(username, password)
-      .then((response) => {
-        localStorage.setItem("id", response.data.id);
-        localStorage.setItem("role", response.data.role);
-        localStorage.setItem("username", response.data.username);
-        window.location.reload();
+    authenticate(username, password)
+      .then((tokenResponse) => {
+        getCurrentUser(tokenResponse.data)
+          .then((userResponse) => {
+            const { data } = userResponse;
+            localStorage.setItem("token", tokenResponse.data);
+            localStorage.setItem("id", data.id);
+            localStorage.setItem("role", data.role);
+            localStorage.setItem("username", data.username);
+            window.location.reload();
+          })
+          .catch(() => setErrorMessage("User not found or wrong credentials"));
       })
-      .catch((e) => {
-        console.log(e.response);
-        setErrorMessage(e.response.data);
-      });
+      .catch(() => setErrorMessage("User not found or wrong credentials"));
   };
   return (
     <Grid className="page" container alignContent="center" spacing={4}>

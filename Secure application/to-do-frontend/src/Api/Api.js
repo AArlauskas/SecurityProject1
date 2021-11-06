@@ -4,10 +4,20 @@ const api = axios.create({
     baseURL: "https://localhost:44314/api",
     Headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
     }
 })
 
-export const login = (username, password) => api.post("/users/login", {username, password})
+axios.interceptors.response.use(response => {
+    return response;
+ }, error => {
+   if (error.response.status === 401) {
+       console.log("401 is bad")
+    // localStorage.clear();
+    // window.location.reload();
+   }
+   return error;
+ });
 
 export const postToDoItem = (data) => api.post("/items", data)
 

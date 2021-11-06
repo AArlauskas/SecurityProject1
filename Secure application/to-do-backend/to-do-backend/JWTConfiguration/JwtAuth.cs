@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using to_do_backend.Utils;
 
 namespace to_do_backend.JWTConfiguration
 {
@@ -21,8 +22,9 @@ namespace to_do_backend.JWTConfiguration
         {
             if (String.IsNullOrWhiteSpace(username) || String.IsNullOrWhiteSpace(password)) return null;
 
-            User user = db.Users.FirstOrDefault(user => user.Username == username && user.Password == password);
+            User user = db.Users.FirstOrDefault(user => user.Username == username);
             if (user == null) return null;
+            if (!Hasher.CheckPlaintextAgainstHash(password, user.Password, user.Salt)) return null;
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenKey = Encoding.ASCII.GetBytes(key);

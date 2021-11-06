@@ -108,10 +108,9 @@ namespace to_do_backend.Controllers
             if (admin == null || admin.Role != "admin") return Unauthorized();
             if (String.IsNullOrWhiteSpace(userDto.username) || String.IsNullOrWhiteSpace(userDto.password)) return BadRequest("Username and password must be provided");
             if (userDto.role != "user" && userDto.role != "admin") return BadRequest("Bad role provided");
-            var user = new User()
+            var user = new User(userDto.password)
             {
                 Username = userDto.username,
-                Password = userDto.password,
                 Role = userDto.role,
                 Items = new List<ToDoItem>()
             };
@@ -131,7 +130,7 @@ namespace to_do_backend.Controllers
             var user = db.Users.Find(userDto.id);
             if (user == null) return NotFound();
             user.Username = userDto.username;
-            user.Password = userDto.password;
+            user.setNewPassword(userDto.password);
             user.Role = userDto.role;
 
             db.SaveChanges();

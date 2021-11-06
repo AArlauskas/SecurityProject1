@@ -18,19 +18,17 @@ namespace to_do_backend
         {
             base.OnModelCreating(modelBuilder);
             List<User> users = new List<User>();
-            users.Add(new User()
+            users.Add(new User("password")
             {
                 Id = 1,
                 Username = "Aurimas",
-                Password = "password",
                 Role = "admin",
                 Items = new List<ToDoItem>()
             });
-            users.Add(new User()
+            users.Add(new User("password")
             {
                 Id = 2,
                 Username = "Ana",
-                Password = "password",
                 Role = "user",
                 Items = new List<ToDoItem>()
             });

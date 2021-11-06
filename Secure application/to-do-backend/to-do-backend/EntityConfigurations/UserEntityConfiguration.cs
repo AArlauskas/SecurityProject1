@@ -25,6 +25,7 @@ namespace to_do_backend.EntityConfigurations
             builder.Property(u => u.Id).ValueGeneratedOnAdd();
             builder.Property(u => u.Username);
             builder.Property(u => u.Password);
+            builder.Property(u => u.Salt);
             builder.Property(u => u.Role);
 
             builder.HasMany(u => u.Items)

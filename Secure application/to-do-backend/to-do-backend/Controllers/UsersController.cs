@@ -20,39 +20,11 @@ namespace to_do_backend.Controllers
             db = backendContext;
         }
 
-        [HttpGet, Route("admin/{id}")]
-        public ActionResult<List<User>> getAdminUsers([FromRoute] int id)
-        {
-            var user = db.Users.Find(id);
-            if (user == null) return NotFound();
-            if (user.Role != "admin") return Unauthorized();
-
-            var users = db.Users.Select(u => new UserDto()
-            {
-                id = u.Id,
-                username = u.Username,
-                password = u.Password,
-                role = u.Role
-            }).ToList();
-
-            return Ok(users);
-        }
-
-        [HttpGet]
-        public ActionResult<List<User>> GetAllUsers()
-        {
-            var users = db.Users.ToList();
-            return Ok(users);
-        }
-
         [HttpGet, Route("personal")]
         [Authorize(Roles = "admin,user")]
         public ActionResult<UserDto> getUserInfo()
         {
-            var claim = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (claim == null) return NotFound();
-            if(!int.TryParse(claim.Value, out int userId)) return NotFound();
-            var user = db.Users.Find(userId);
+            var user = getUserFromClaim();
             if (user == null) return NotFound();
             var userDto = new UserDto()
             {
@@ -65,11 +37,25 @@ namespace to_do_backend.Controllers
             return Ok(userDto);
         }
 
-        [HttpPost, Route("{adminId}")]
-        public ActionResult<UserDto> addUser([FromRoute] int adminId, [FromBody] UserDto userDto)
+        [HttpGet, Route("admin")]
+        [Authorize(Roles = "admin")]
+        public ActionResult<List<User>> getAdminUsers()
         {
-            User admin = db.Users.Find(adminId);
-            if (admin == null || admin.Role != "admin") return Unauthorized();
+            var users = db.Users.Select(u => new UserDto()
+            {
+                id = u.Id,
+                username = u.Username,
+                password = u.Password,
+                role = u.Role
+            }).ToList();
+
+            return Ok(users);
+        }
+
+        [HttpPost, Route("admin")]
+        [Authorize(Roles = "admin")]
+        public ActionResult<UserDto> addUser([FromBody] UserDto userDto)
+        {
             if (String.IsNullOrWhiteSpace(userDto.username) || String.IsNullOrWhiteSpace(userDto.password)) return BadRequest("Username and password must be provided");
             if (userDto.role != "user" && userDto.role != "admin") return BadRequest("Bad role provided");
             var user = new User(userDto.password)
@@ -84,11 +70,10 @@ namespace to_do_backend.Controllers
             return Ok(user);
         }
 
-        [HttpPut, Route("{adminId}")]
-        public ActionResult<UserDto> updateUser([FromRoute] int adminId, [FromBody] UserDto userDto)
+        [HttpPut, Route("admin")]
+        [Authorize(Roles = "admin")]
+        public ActionResult<UserDto> updateUser([FromBody] UserDto userDto)
         {
-            User admin = db.Users.Find(adminId);
-            if (admin == null || admin.Role != "admin") return Unauthorized();
             if (String.IsNullOrWhiteSpace(userDto.username) || String.IsNullOrWhiteSpace(userDto.password)) return BadRequest("Username and password must be provided");
             if (userDto.role != "user" && userDto.role != "admin") return BadRequest("Bad role provided");
             var user = db.Users.Find(userDto.id);
@@ -101,18 +86,24 @@ namespace to_do_backend.Controllers
             return Ok();
         }
 
-        [HttpDelete, Route("{adminId}/{userId}")]
-        public ActionResult<UserDto> deleteUser([FromRoute] int adminId, [FromRoute] int userId)
+        [HttpDelete, Route("admin/{userId}")]
+        [Authorize(Roles = "admin")]
+        public ActionResult<UserDto> deleteUser([FromRoute] int id)
         {
-            User admin = db.Users.Find(adminId);
-            if (admin == null || admin.Role != "admin") return Unauthorized();
-
-            User user = db.Users.Find(userId);
+            User user = db.Users.Find(id);
             if (user == null) return NotFound();
             db.Users.Remove(user);
             db.SaveChanges();
             return Ok();
         }
 
+        private User getUserFromClaim()
+        {
+            var claim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (claim == null) return null;
+            if (!int.TryParse(claim.Value, out int userId)) return null;
+            var user = db.Users.Find(userId);
+            return user;
+        }
     }
 }

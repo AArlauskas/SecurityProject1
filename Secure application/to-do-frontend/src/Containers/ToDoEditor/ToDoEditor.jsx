@@ -53,6 +53,9 @@ const ToDoEditor = (props) => {
           label="Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          inputProps={{
+            maxLength: 50,
+          }}
         />
       </Grid>
       <Grid item xs={6}>
@@ -64,6 +67,9 @@ const ToDoEditor = (props) => {
           rows={3}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          inputProps={{
+            maxLength: 150,
+          }}
         />
       </Grid>
       <Grid item xs={12} container justifyContent="space-around">

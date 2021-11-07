@@ -24,21 +24,15 @@ export default function AdminPage() {
   ];
   const [data, setData] = useState([]);
   useEffect(() => {
-    const id = window.localStorage.getItem("id");
-    if (id) {
-      getAdminUsers(id)
-        .then((response) => {
-          const { data } = response;
-          setData(data);
-        })
-        .catch(() => {
-          window.localStorage.clear();
-          window.location.reload();
-        });
-    } else {
-      window.localStorage.clear();
-      window.location.reload();
-    }
+    getAdminUsers()
+      .then((response) => {
+        const { data } = response;
+        setData(data);
+      })
+      .catch(() => {
+        window.localStorage.clear();
+        window.location.reload();
+      });
   }, []);
   return (
     <div style={{ padding: 10 }}>
@@ -53,8 +47,7 @@ export default function AdminPage() {
           onRowAdd: (newData) =>
             new Promise((resolve, reject) => {
               setTimeout(() => {
-                const adminId = window.localStorage.getItem("id");
-                addUser(adminId, newData)
+                addUser(newData)
                   .then((response) => {
                     const responseData = response.data;
                     const newData = [...data];
@@ -70,8 +63,7 @@ export default function AdminPage() {
           onRowUpdate: (newData, oldData) =>
             new Promise((resolve, reject) => {
               setTimeout(() => {
-                const adminId = window.localStorage.getItem("id");
-                updateUser(adminId, newData)
+                updateUser(newData)
                   .then(() => {
                     const tempData = data.map((u) =>
                       u.id === oldData.id
@@ -94,9 +86,8 @@ export default function AdminPage() {
           onRowDelete: (oldData) =>
             new Promise((resolve, reject) => {
               setTimeout(() => {
-                const adminId = window.localStorage.getItem("id");
                 const userId = oldData.id;
-                deleteUser(adminId, userId)
+                deleteUser(userId)
                   .then(() => {
                     const tempData = data.filter((u) => u.id !== userId);
                     setData(tempData);

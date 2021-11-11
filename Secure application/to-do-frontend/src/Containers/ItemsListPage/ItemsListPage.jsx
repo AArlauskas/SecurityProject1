@@ -25,26 +25,24 @@ export default function ItemsListPage() {
   }, []);
 
   const getAdminList = () => {
-    const id = window.localStorage.getItem("id");
-    getAdminItems(id)
+    getAdminItems()
       .then((response) => {
         setItems(response.data);
       })
       .catch(() => {
-        window.localStorage.clear();
-        window.location.reload();
+        // window.localStorage.clear();
+        // window.location.reload();
       });
   };
 
   const getUserList = () => {
-    const id = window.localStorage.getItem("id");
-    getUserItems(id)
+    getUserItems()
       .then((response) => {
         setItems(response.data);
       })
       .catch(() => {
-        window.localStorage.clear();
-        window.location.reload();
+        // window.localStorage.clear();
+        // window.location.reload();
       });
   };
 
@@ -55,8 +53,8 @@ export default function ItemsListPage() {
         setItems(filteredItems);
       })
       .catch(() => {
-        window.localStorage.clear();
-        window.location.reload();
+        // window.localStorage.clear();
+        // window.location.reload();
       });
   };
 
@@ -78,7 +76,7 @@ export default function ItemsListPage() {
         container
         item
         direction="column"
-        alignItems="center"
+        alignItems="stretch"
         spacing={2}
         xs={11}
         sm={9}
@@ -94,7 +92,7 @@ export default function ItemsListPage() {
         </Grid>
         <Grid item>
           <Paper elevation={2}>
-            <List style={{ width: "100%" }}>
+            <List>
               {items.map((item) => (
                 <div key={item.id}>
                   <ToDoListItem

@@ -8,7 +8,6 @@ import {
   IconButton,
 } from "@mui/material";
 import { green, pink } from "@mui/material/colors";
-import InnerHTML from "dangerously-set-html-content";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -22,9 +21,8 @@ export default function ToDoListItem({
   onToggle,
   onClick,
 }) {
-  const formatedDescription = `<div style="padding: 40px">${description}</div>`;
   return (
-    <ListItem button>
+    <ListItem button style={{ width: "100%" }}>
       <ListItemAvatar id="Avatar" onClick={() => onToggle(id)}>
         {isDone ? (
           <Avatar sx={{ bgcolor: green[500] }}>
@@ -36,8 +34,11 @@ export default function ToDoListItem({
           </Avatar>
         )}
       </ListItemAvatar>
-      <ListItemText primary={title} onClick={() => onClick(id)} />
-      <InnerHTML html={formatedDescription} onClick={() => onClick(id)} />
+      <ListItemText
+        primary={title}
+        secondary={description}
+        onClick={() => onClick(id)}
+      />
       <ListItemSecondaryAction>
         <ListItemIcon>
           <IconButton onClick={() => onDelete(id)}>
